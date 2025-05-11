@@ -8,7 +8,10 @@ const Navbar = () => {
     <div className='flex items-center justify-between py-3 font-medium bg-[#FFC0CB] px-6'>
       <div className="flex items-center gap-x-10">
         <img src={assets.logo} className="w-20 h-auto" alt="Logo" />
-        <p className="text-xl text-sm text-gray-700">LEELAF.PK</p>
+        <p style={{ fontFamily: '"Playfair Display", serif' }} className="text-xl text-[#292a2e]">
+  LEELAF.PK
+</p>
+
       </div>
 
       {/* NavLinks Container */}
@@ -61,7 +64,7 @@ const Navbar = () => {
        <img onClick={()=>setVisible(true)} src={assets.menu_icon} className ='w-5 cursor-pointer sm:hidden' alt="" />
 
       </div>
-      {/* Sidebar Menu for small screen*/}
+      {/* Sidebar Menu for small screen to ensure responsiveness of our navbar*/}
       <div className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${visible ? 'w-full': 'w-0'}`}>
           <div className='flex flex-col text-gray-600'>
             <div onClick={()=>setVisible(false)} className='flex items-center gap-4 p-3 cursor-pointer' >
