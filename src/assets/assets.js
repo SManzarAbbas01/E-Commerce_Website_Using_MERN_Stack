@@ -50,7 +50,7 @@ import p_img49 from './p_img49.png'
 import p_img50 from './p_img50.png'
 import p_img51 from './p_img51.png'
 import p_img52 from './p_img52.png'
-
+import banner from './banner.png'
 
 import logo from './logo.png'
 import cart_icon from './cart_icon.png'
@@ -66,6 +66,8 @@ import menu_icon from './menu_icon.png'
 import contact_img from './contact_img.png'
 import cross_icon from './cross_icon.png'
 
+
+
 export const assets = {
     logo,
     cart_icon,
@@ -79,7 +81,8 @@ export const assets = {
     bin_icon,
     menu_icon,
     contact_img,
-    cross_icon
+    cross_icon,
+    banner
 }
 
 

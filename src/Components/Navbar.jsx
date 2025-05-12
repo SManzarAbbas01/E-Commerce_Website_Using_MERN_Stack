@@ -7,7 +7,8 @@ const Navbar = () => {
   return (
     <div className='flex items-center justify-between py-3 font-medium bg-[#FFC0CB] px-6'>
       <div className="flex items-center gap-x-10">
-        <img src={assets.logo} className="w-20 h-auto" alt="Logo" />
+        {/*here we are applying the logic that whenever we click on logo , we get redirected to our main page pn website, so we are wrapping this iamge tag  usinh link tag */}
+       <Link to="/" ><img src={assets.logo} className="w-20 h-auto" alt="Logo" /></Link>
         <p style={{ fontFamily: '"Playfair Display", serif' }} className="text-xl text-[#292a2e]">
   LEELAF.PK
 </p>
