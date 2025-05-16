@@ -8,7 +8,7 @@ const Navbar = () => {
     <div className='flex items-center justify-between py-3 font-medium bg-[#FFC0CB] px-6'>
       <div className="flex items-center gap-x-10">
         <img src={assets.logo} className="w-20 h-auto" alt="Logo" />
-        <p className="text-xl text-sm text-gray-700">LEELAF.PK</p>
+        <p className="text-xl text-sm text-gray-700 font-family:Playfair Display ,Serif">LEELAF.PK</p>
       </div>
 
       {/* NavLinks Container */}
