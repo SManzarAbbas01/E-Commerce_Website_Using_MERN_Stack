@@ -82,7 +82,8 @@ export const assets = {
     menu_icon,
     contact_img,
     cross_icon,
-    banner
+    banner,
+   
 }
 
 

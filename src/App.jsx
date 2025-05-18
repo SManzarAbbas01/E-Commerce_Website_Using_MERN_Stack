@@ -10,6 +10,7 @@ import Login from './Pages/Login'
 import PlaceOrder from './Pages/PlaceOrder'
 import Orders from './Pages/Orders'
 import Navbar from './Components/Navbar'
+import Footer from './Components/Footer'
 
 function App() {
   return (
@@ -26,6 +27,8 @@ function App() {
       <Route path='/place-order' element = {<PlaceOrder/>}/>
       <Route path='/orders' element = {<Orders/>}/>
       </Routes>
+      <Footer />
+      {/* we mount all those components in app.jsx that we want to show on every page of our webiste, similary on homee.jsx we mount only those components that we want should appear whenever we acces home page */}
     </div>
   )
 }
