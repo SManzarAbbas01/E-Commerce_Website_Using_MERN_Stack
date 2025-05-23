@@ -12,26 +12,34 @@ const Collection = () => {
   const [subCategory, setSubCategory] = useState([]);
 
   const toggleCategory = (e) => {
-    if (category.includes(e.target.value)) {
-      setCategory(prev => prev.filter(item => item !== e.target.value));
+    const value = e.target.value;
+    if (category.includes(value)) {
+      setCategory(prev => prev.filter(item => item !== value));
     } else {
-      setCategory(prev => [...prev, e.target.value]);
+      setCategory(prev => [...prev, value]);
     }
   };
 
   const toggleSubCategory = (e) => {
-    if (subCategory.includes(e.target.value)) {
-      setSubCategory(prev => prev.filter(item => item !== e.target.value));
+    const value = e.target.value;
+    if (subCategory.includes(value)) {
+      setSubCategory(prev => prev.filter(item => item !== value));
     } else {
-      setSubCategory(prev => [...prev, e.target.value]);
+      setSubCategory(prev => [...prev, value]);
     }
   };
 
   const applyFilters = () => {
     let productsCopy = products.slice();
+
     if (category.length > 0) {
       productsCopy = productsCopy.filter(item => category.includes(item.category));
     }
+
+    if (subCategory.length > 0) {
+      productsCopy = productsCopy.filter(item => subCategory.includes(item.subCategory));
+    }
+
     setFilterProducts(productsCopy);
   };
 
@@ -41,7 +49,7 @@ const Collection = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [category, subCategory]);
+  }, [category, subCategory, products]);
 
   const toggleFilters = () => {
     setShowFilter(!showFilter);
@@ -64,14 +72,14 @@ const Collection = () => {
           />
         </p>
 
-        <div className={`bg-pink-100 text-black border border-pink-500 pl-5 py-3 mt-6 ${showFilter ? '' : 'hidden'} sm:block`}>
-          <p className='mb-3 text-sm font-medium'> Categories </p>
+        <div className={`bg-[#FFC0CB] text-black border border-pink-500 pl-5 py-3 my-5 ${showFilter ? '' : 'hidden'} sm:block`}>
+          <p className='mb-3 text-sm font-medium'> CATEGORIES </p>
           <div className='flex flex-col gap-2 text-sm font-light'>
             <p className='flex-gap-2'>
               <input className="w-3" type="checkbox" value={'Hijabs'} onChange={toggleCategory} /> Hijabs
             </p>
             <p className='flex-gap-2'>
-              <input className="w-3" type="checkbox" value={' Hijab Accessories'} onChange={toggleCategory} /> Accessories
+              <input className="w-3" type="checkbox" value={'Hijab Accessories'} onChange={toggleCategory} /> Accessories
             </p>
             <p className='flex-gap-2'>
               <input className="w-3" type="checkbox" value={'Abayas'} onChange={toggleCategory} /> Abayas
@@ -79,7 +87,7 @@ const Collection = () => {
           </div>
         </div>
 
-        <div className={`bg-pink-100 text-black border border-pink-500 pl-5 py-3 my-5 ${showFilter ? '' : 'hidden'} sm:block`}>
+        <div className={`bg-[#FFC0CB] text-black border border-pink-500 pl-5 py-3 my-5 ${showFilter ? '' : 'hidden'} sm:block`}>
           <p className='mb-3 text-sm font-medium'> TYPE </p>
           <div className='flex flex-col gap-2 text-sm font-light'>
             <p className='flex-gap-2'>
@@ -95,7 +103,7 @@ const Collection = () => {
               <input className="w-3" type="checkbox" value={'Hijab Pins'} onChange={toggleSubCategory} /> Hijab Pins
             </p>
             <p className='flex-gap-2'>
-              <input className="w-3" type="checkbox" value={'4_in_1 Hijab Caps '} onChange={toggleSubCategory} /> 4_in_1 Hijab Caps
+              <input className="w-3" type="checkbox" value={'4_in_1 Hijab Caps'} onChange={toggleSubCategory} /> 4_in_1 Hijab Caps
             </p>
             <p className='flex-gap-2'>
               <input className="w-3" type="checkbox" value={'Printed Lawn Hijabs'} onChange={toggleSubCategory} /> Printed Lawn Hijabs
