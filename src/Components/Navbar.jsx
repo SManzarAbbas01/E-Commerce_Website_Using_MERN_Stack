@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext} from 'react';
 import { assets } from '../assets/assets';
 import { Link, NavLink } from 'react-router-dom';
+import { ShopContext } from '../context/ShopContext'; // <-- This path is correct for Navbar.jsx
 
 const Navbar = () => {
   const [visible,setVisible]=useState(false);
+
+
+  const {setShowSearch} = useContext(ShopContext);
   return (
     <div className='flex items-center justify-between py-3 font-medium bg-[#FFC0CB] px-6'>
       <div className="flex items-center gap-x-10">
         {/*here we are applying the logic that whenever we click on logo , we get redirected to our main page pn website, so we are wrapping this iamge tag  usinh link tag */}
-       <Link to="/" ><img src={assets.logo} className="w-20 h-auto" alt="Logo" /></Link>
+       <Link to="/" ><img   src={assets.logo} className="w-20 h-auto" alt="Logo" /></Link>
         <p style={{ fontFamily: '"Playfair Display", serif' }} className="text-xl text-[#292a2e]">
   LEELAF.PK
 </p>
@@ -39,7 +43,7 @@ const Navbar = () => {
       </div>
 
       <div className='flex items-center gap-6'>
-        <img src={assets.search_icon} className='w-5 cursor-pointer' alt="" />
+        <img  onClick={()=> setShowSearch(true)} src={assets.search_icon} className='w-5 cursor-pointer' alt="" />
         <div className='group relative'>
           <img className='w-5 cursor-pointer' src={assets.profile_icon} alt="" />
           <div className='hidden group-hover:block absolute top-full right-0 pt-2'>

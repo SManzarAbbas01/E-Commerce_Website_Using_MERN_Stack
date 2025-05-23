@@ -10,7 +10,7 @@ const ShopContextProvider = (props) => {
 
     const [search,setSearch]= useState('');
     {/* If this is true then we will display the search BarProp, if false then our search bar is hidden */}
-    const [ showSearch,setShowSearch]= useState(true);
+    const [ showSearch,setShowSearch]= useState(false);
 
 
     const value = {
