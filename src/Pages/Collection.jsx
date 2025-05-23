@@ -56,7 +56,7 @@ const Collection = () => {
           className='my-2 text-xl flex items-center cursor-pointer gap-2'
           onClick={toggleFilters}
         >
-          FILTERS
+          SELECT YOUR CHOICE !
           <img
             className={`h-3 sm:hidden ${showFilter ? 'rotate-90' : ''}`}
             src={assets.dropdown_icon}
