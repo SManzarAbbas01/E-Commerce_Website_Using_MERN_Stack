@@ -11,12 +11,10 @@ import p_img10 from './p_img10.png'
 import p_img11 from './p_img11.png'
 import p_img12 from './p_img12.png'
 import p_img13 from './p_img13.png'
-import p_img14 from './p_img14.png'
-import p_img15 from './p_img15.png'
-import p_img16 from './p_img16.png'
-import p_img17 from './p_img17.png'
+
+
 import p_img18 from './p_img18.png'
-import p_img19 from './p_img19.png'
+
 import p_img20 from './p_img20.png'
 import p_img21 from './p_img21.png'
 import p_img22 from './p_img22.png'
@@ -241,57 +239,8 @@ export const products = [
         date: 1716625545448,
         bestseller: false
     },
-    {
-        _id: "aaaan",
-        name: "Boy Round Neck Pure Cotton T-shirt",
-        description: "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
-        price: 160,
-        image: [p_img14],
-        category: "Kids",
-        subCategory: "Topwear",
-        sizes: ["S", "M", "L", "XL"],
-        date: 1716626645448,
-        bestseller: false
-    },
-    {
-        _id: "aaaao",
-        name: "Foil Hijabs-Navy",
-        description: "Add a touch of luxury with our Embossed/Stone Studded Lawn Hijabs. Featuring intricate designs and delicate embellishments, these hijabs bring a stylish, sophisticated flair to any outfit.",
-        price: 799,
-        image: [p_img15],
-        category: "Hijabs",
-        subCategory: "Stone Studded Hijabs",
-        sizes: ["S", "M", "L", "XL"],
-        date: 1716627745448,
-        bestseller: false
-    },
-    /*reviews image below*/
-    {
-        _id: "aaaap",
-        name: "Girls Round Neck Cotton Top",
-        description: "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
-        price: 170,
-        image: [p_img16],
-        category: "Kids",
-        subCategory: "Topwear",
-        sizes: ["S", "M", "L", "XL"],
-        date: 1716628845448,
-        bestseller: false
-    },
-     /*reviews image below*/
-    {
-        _id: "aaaaq",
-        name: " Premium Georgette Hijabs",
-        description: "Crafted from lightweight, high-quality fabric, our Premium Georgette Hijabs offer a perfect blend of elegance, comfort, and breathability for any occasion..",
-        price: 599,
-        image: [p_img17],
-        category: "Women ",
-        subCategory: "Georgette Hijabs",
-        sizes: ["S", "L", "XL"],
-        date: 1716629945448,
-        bestseller: false
-    },
-     /*reviews image below*/
+   
+   
     {
         _id: "aaaar",
         name: " Premium Georgette Hijabs",
@@ -305,18 +254,7 @@ export const products = [
         bestseller: false
     },
     /*Card image bwloe */
-    {
-        _id: "aaaas",
-        name: "Boy Round Neck Pure Cotton T-shirt",
-        description: "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
-        price: 160,
-        image: [p_img19],
-        category: "Kids",
-        subCategory: "Topwear",
-        sizes: ["S", "M", "L", "XL"],
-        date: 1716632145448,
-        bestseller: false
-    },
+  
 
     {
         _id: "aaaat",
