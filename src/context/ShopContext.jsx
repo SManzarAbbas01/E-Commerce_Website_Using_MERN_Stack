@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { products } from "../assets/assets"; // Assuming 'products' is imported from local assets
+import { useNavigate } from "react-router-dom";
 
 export const ShopContext = createContext();
 
@@ -12,14 +13,14 @@ const ShopContextProvider = (props) => {
     {/* If this is true then we will display the search BarProp, if false then our search bar is hidden */}
     const [showSearch, setShowSearch] = useState(false);
 
+    const navigate = useNavigate();
+    //making navigate object to use in our cart page so when user clicks on checkout he is navigated to payment details page
+
     const [cartItems, setCartItems] = useState(() => {
         // Initialize cartItems with an empty object on initial load
         // You might want to pre-populate this based on 'products' from assets if needed
         let defaultCart = {};
-        // If products are available immediately, you could initialize defaultCart here
-        // products.forEach(product => {
-        //     defaultCart[product._id] = { 'default': 0 }; // Example initialization
-        // });
+        
         return defaultCart;
     });
 
@@ -48,6 +49,31 @@ const ShopContextProvider = (props) => {
         setCartItems(cartData);
     }
 
+// to get tht total amount of products added in our file we make this func
+    const getCartAmount =  () => {
+        let totalAmount = 0 ;
+        //
+        for (const items in cartItems)
+        {   // storing product data in this item info variable if the if statmenet matches
+            let itemInfo = products.find((product) => product._id === items);
+            for (const item in cartItems[items])
+            {
+                try {
+                     if (cartItems[items][item] >0 )
+                     {
+                        totalAmount +=itemInfo.price *cartItems[items][item];
+                     }
+
+                }
+                catch( error)
+                {
+
+                }
+            }
+
+        }
+        return totalAmount;
+    }
 
     {/* function to gte the quanity of product we have selected be displayed in out cart */}
     const getCartCount = () => {
@@ -74,7 +100,9 @@ const ShopContextProvider = (props) => {
         cartItems,
         addToCart,
         getCartCount,
-        updateQuantity // Added updateQuantity function
+        updateQuantity,// Added updateQuantity function
+        getCartAmount,
+        navigate
     }
 
     return (

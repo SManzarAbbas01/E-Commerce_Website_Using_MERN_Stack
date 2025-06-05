@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import Title from '../Components/title.jsx';
 import bin_icon from '../assets/bin_icon.png'; // Added bin icon import
-
+import CartTotal from '../Components/CartTotal.jsx';
 const Cart = () => {
 
-    const { products, currency, cartItems, removeFromCart, updateCartItemQuantity , updateQuantity } = useContext(ShopContext);
+    const { products, currency, cartItems, navigate , updateCartItemQuantity , updateQuantity } = useContext(ShopContext);
 
     const [cartData, setcartData] = useState([]);
     //whenever cart Items will update, this function executes thus we add it in dependency array 
@@ -102,6 +102,16 @@ const Cart = () => {
 
                     })
                 )}
+            </div>
+            <div className='flex justify-end my-20'>
+              <div className='w-full sm:w-[450px]'>
+                <CartTotal />
+                <div className='w-full text-end '>
+                  
+                  <button  onClick={()  => navigate('/place-order')} className='bg-black text-white text-sm my-8 px-8 py-3' > CHECKOUT </button>
+                </div>
+              </div>
+
             </div>
         </div>
     )
