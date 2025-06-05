@@ -5,9 +5,12 @@ import { assets } from '../assets/assets';
 
 const Product = () => {
   const {productId} = useParams();
-  const { products ,currency} = useContext(ShopContext);
+  const { products ,currency ,addToCart} = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [image , setImaege] = useState('');
+  const [size,setSize] = useState('')
+
+
   const fetchProductData = async () => {
   products.map((item) => {
     if(item._id === productId){
@@ -68,6 +71,19 @@ const Product = () => {
           </div>
           <p className='mt-5 text-3xl font-medium'>{currency}{productData.price}</p>
           <p className='mt-5 text-gray-500 sm:w-4/5'>{productData.description}</p>
+          <div className='flex flex-col gap-4 my-8'>
+            <p> Select Size</p>
+            <div className='flex-gap-2'>
+              {productData.sizes.map((item,index) =>(
+                <button onClick={() => setSize(item)} className={`border py-2 px-4 bg-gray-100 ${item === size ? `border-orange-500` : ``}`} key={index}> {item} </button>
+
+              ) )}
+
+            </div>
+
+          </div>
+        <button  onClick ={ () => addToCart(productData._id,size)} className='bg-black text-white px-8 py-3 text-sm  active:bg-gray-700'> Add to Cart </button>
+        <hr className='mt-8 sm:w-4/5' ></hr>
           </div>
 
 
