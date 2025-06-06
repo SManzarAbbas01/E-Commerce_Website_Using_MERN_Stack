@@ -64,6 +64,10 @@ import menu_icon from './menu_icon.png'
 import contact_img from './contact_img.png'
 import cross_icon from './cross_icon.png'
 
+// Import the new logos here
+import easypaisa_logo from './easypaisa_logo.png';
+import jazzcash_logo from './jazzcash_logo.png';
+import creditcard_logo from './creditcard_logo.png';
 
 
 export const assets = {
@@ -81,7 +85,10 @@ export const assets = {
     contact_img,
     cross_icon,
     banner,
-   
+    // Export the new logos here
+    easypaisa_logo,
+    jazzcash_logo,
+    creditcard_logo,
 }
 
 
@@ -239,8 +246,8 @@ export const products = [
         date: 1716625545448,
         bestseller: false
     },
-   
-   
+    
+    
     {
         _id: "aaaar",
         name: " Premium Georgette Hijabs",
@@ -254,7 +261,7 @@ export const products = [
         bestseller: false
     },
     /*Card image bwloe */
-  
+    
 
     {
         _id: "aaaat",
