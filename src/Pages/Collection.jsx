@@ -5,136 +5,149 @@ import Title from '../Components/title';
 import ProductItem from '../Components/ProductItem';
 
 const Collection = () => {
-  const { products ,search,showSearch } = useContext(ShopContext);
-  const [showFilter, setShowFilter] = useState(false);
-  const [filterProducts, setFilterProducts] = useState([]);
-  const [category, setCategory] = useState([]);
-  const [subCategory, setSubCategory] = useState([]);
+    const { products, search, showSearch } = useContext(ShopContext);
+    const [showFilter, setShowFilter] = useState(false);
+    const [filterProducts, setFilterProducts] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]); // Renamed for clarity
+    const [selectedSubCategories, setSelectedSubCategories] = useState([]); // Renamed for clarity
 
-  const toggleCategory = (e) => {
-    const value = e.target.value;
-    if (category.includes(value)) {
-      setCategory(prev => prev.filter(item => item !== value));
-    } else {
-      setCategory(prev => [...prev, value]);
-    }
-  };
+    // Helper to get unique categories and subcategories from products
+    const uniqueCategories = [...new Set(products.map(p => p.category))];
+    const uniqueSubCategories = [...new Set(products.map(p => p.subCategory))];
 
-  const toggleSubCategory = (e) => {
-    const value = e.target.value;
-    if (subCategory.includes(value)) {
-      setSubCategory(prev => prev.filter(item => item !== value));
-    } else {
-      setSubCategory(prev => [...prev, value]);
-    }
-  };
+    const toggleCategory = (e) => {
+        const value = e.target.value;
+        setSelectedCategories(prev =>
+            prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]
+        );
+    };
 
-  const applyFilters = () => {
-    let productsCopy = products.slice();
+    const toggleSubCategory = (e) => {
+        const value = e.target.value;
+        setSelectedSubCategories(prev =>
+            prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]
+        );
+    };
 
-    if (showSearch && search) {
-      productsCopy = productsCopy.filter(item => 
-        item.name.toLowerCase().includes(search.toLowerCase())
-      );
-    }
+    const applyFilters = () => {
+        let productsCopy = products; // Start with the full product list
 
-    if (category.length > 0) {
-      productsCopy = productsCopy.filter(item => category.includes(item.category));
-    }
+        if (showSearch && search) {
+            productsCopy = productsCopy.filter(item =>
+                item.name.toLowerCase().includes(search.toLowerCase())
+            );
+        }
 
-    if (subCategory.length > 0) {
-      productsCopy = productsCopy.filter(item => subCategory.includes(item.subCategory));
-    }
+        if (selectedCategories.length > 0) {
+            productsCopy = productsCopy.filter(item => selectedCategories.includes(item.category));
+        }
 
-    setFilterProducts(productsCopy);
-  };
+        if (selectedSubCategories.length > 0) {
+            productsCopy = productsCopy.filter(item => selectedSubCategories.includes(item.subCategory));
+        }
 
-  useEffect(() => {
-    setFilterProducts(products);
-  }, [products]);
+        setFilterProducts(productsCopy);
+    };
 
-  useEffect(() => {
-    applyFilters();
-  }, [category, subCategory,  search, showSearch]);
+    // Initialize filtered products on component mount or when products change
+    useEffect(() => {
+        setFilterProducts(products);
+    }, [products]);
 
-  const toggleFilters = () => {
-    setShowFilter(!showFilter);
-  };
+    // Apply filters whenever selected categories, subcategories, or search terms change
+    useEffect(() => {
+        applyFilters();
+    }, [selectedCategories, selectedSubCategories, search, showSearch, products]); // Added products to dependency array
 
-  return (
-    <div className='flex flex-col sm:flex-row-reverse gap-1 sm:gap-10 pt-10 border-t'>
+    const toggleFilters = () => {
+        setShowFilter(!showFilter);
+    };
 
-      {/* Filter options container on the right side */}
-      <div className='min-w-60'>
-        <p
-          className='my-2 text-xl flex items-center cursor-pointer gap-2'
-          onClick={toggleFilters}
-        >
-          SELECT YOUR CHOICE !
-          <img
-            className={`h-3 sm:hidden ${showFilter ? 'rotate-90' : ''}`}
-            src={assets.dropdown_icon}
-            alt="Toggle Filters"
-          />
-        </p>
+    return (
+        <div className='flex flex-col md:flex-row gap-8 sm:gap-12 pt-8 md:pt-12 border-t'>
 
-        <div className={`bg-[#FFC0CB] text-black border border-pink-500 pl-5 py-3 my-5 ${showFilter ? '' : 'hidden'} sm:block`}>
-          <p className='mb-3 text-sm font-medium'> CATEGORIES </p>
-          <div className='flex flex-col gap-2 text-sm font-light'>
-            <p className='flex-gap-2'>
-              <input className="w-3" type="checkbox" value={'Hijabs'} onChange={toggleCategory} /> Hijabs
-            </p>
-            <p className='flex-gap-2'>
-              <input className="w-3" type="checkbox" value={'Hijab Accessories'} onChange={toggleCategory} /> Accessories
-            </p>
-            <p className='flex-gap-2'>
-              <input className="w-3" type="checkbox" value={'Abayas'} onChange={toggleCategory} /> Abayas
-            </p>
-          </div>
+            {/* Filter Sidebar (Desktop: fixed, Mobile: toggled) */}
+            <div className='w-full md:w-64 lg:w-72 flex-shrink-0 md:sticky md:top-20 md:h-[calc(100vh-80px)] md:overflow-y-auto pb-6'> {/* Added sticky positioning and fixed height for scroll */}
+                <p
+                    className='mb-4 text-xl font-semibold flex items-center justify-between cursor-pointer md:cursor-default text-gray-800 p-2 md:p-0'
+                    onClick={toggleFilters}
+                >
+                    SELECT YOUR CHOICE!
+                    <img
+                        className={`h-4 md:hidden transform transition-transform duration-300 ${showFilter ? 'rotate-180' : ''}`}
+                        src={assets.dropdown_icon}
+                        alt="Toggle Filters"
+                    />
+                </p>
+
+                <div className={`bg-[#FFC0CB] text-black border border-pink-500 rounded-lg p-5 shadow-lg
+                                 transition-all duration-300 ease-in-out md:block
+                                 ${showFilter ? 'max-h-[500px] opacity-100 visible' : 'max-h-0 opacity-0 invisible md:max-h-full md:opacity-100 md:visible'}`}>
+                    
+                    {/* Categories Filter */}
+                    <div className='mb-6'>
+                        <p className='mb-3 text-base font-semibold text-gray-800'>CATEGORIES</p>
+                        <div className='flex flex-col gap-2 text-sm text-gray-700'>
+                            {uniqueCategories.map(cat => (
+                                <label key={cat} className='flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors'>
+                                    <input
+                                        className="w-4 h-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
+                                        type="checkbox"
+                                        value={cat}
+                                        onChange={toggleCategory}
+                                        checked={selectedCategories.includes(cat)}
+                                    />
+                                    {cat}
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Types (Sub-Categories) Filter */}
+                    <div>
+                        <p className='mb-3 text-base font-semibold text-gray-800'>TYPE</p>
+                        <div className='flex flex-col gap-2 text-sm text-gray-700'>
+                            {uniqueSubCategories.map(subCat => (
+                                <label key={subCat} className='flex items-center gap-2 cursor-pointer hover:text-gray-900 transition-colors'>
+                                    <input
+                                        className="w-4 h-4 text-pink-600 focus:ring-pink-500 border-gray-300 rounded"
+                                        type="checkbox"
+                                        value={subCat}
+                                        onChange={toggleSubCategory}
+                                        checked={selectedSubCategories.includes(subCat)}
+                                    />
+                                    {subCat.replace(/_/g, ' ')} {/* Replace underscores for display */}
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Product Listing */}
+            <div className='flex-1 min-h-[60vh]'> {/* Ensure minimum height for content */}
+                <div className='flex items-center justify-between text-xl sm:text-2xl mb-6'>
+                    <Title text1={'Our Entire'} text2={'COLLECTION'} />
+                </div>
+
+                {filterProducts.length > 0 ? (
+                    <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6'> {/* Adjusted gap for better spacing */}
+                        {filterProducts.map((item) => (
+                            <ProductItem
+                                key={item._id} // Use _id for unique key if available
+                                name={item.name}
+                                id={item._id}
+                                price={item.price}
+                                image={item.image}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-center text-gray-600 text-lg mt-10">No products found matching your criteria.</p>
+                )}
+            </div>
         </div>
-
-        <div className={`bg-[#FFC0CB] text-black border border-pink-500 pl-5 py-3 my-5 ${showFilter ? '' : 'hidden'} sm:block`}>
-          <p className='mb-3 text-sm font-medium'> TYPE </p>
-          <div className='flex flex-col gap-2 text-sm font-light'>
-            <p className='flex-gap-2'>
-              <input className="w-3" type="checkbox" value={'Georgette Hijabs'} onChange={toggleSubCategory} /> Georgette Hijabs
-            </p>
-            <p className='flex-gap-2'>
-              <input className="w-3" type="checkbox" value={'Stone Studded Hijabs'} onChange={toggleSubCategory} /> Stone Studded Hijabs
-            </p>
-            <p className='flex-gap-2'>
-              <input className="w-3" type="checkbox" value={'Crinkle Crimp Hijabs'} onChange={toggleSubCategory} /> Crinkle Crimp Hijabs
-            </p>
-            <p className='flex-gap-2'>
-              <input className="w-3" type="checkbox" value={'Hijab Pins'} onChange={toggleSubCategory} /> Hijab Pins
-            </p>
-            <p className='flex-gap-2'>
-              <input className="w-3" type="checkbox" value={'4_in_1 Hijab Caps'} onChange={toggleSubCategory} /> 4_in_1 Hijab Caps
-            </p>
-            <p className='flex-gap-2'>
-              <input className="w-3" type="checkbox" value={'Printed Lawn Hijabs'} onChange={toggleSubCategory} /> Printed Lawn Hijabs
-            </p>
-            <p className='flex-gap-2'>
-              <input className="w-3" type="checkbox" value={'Printed Chiffon Hijabs'} onChange={toggleSubCategory} /> Printed Chiffon Hijabs
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Product Listing */}
-      <div className='flex-1'>
-        <div className='flex justify-between text-base sm:text-2xl mb-4'>
-          <Title text1={'Our Entire'} text2={'COLLECTION'} />
-        </div>
-
-        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gapy-6'>
-          {filterProducts.map((item, index) => (
-            <ProductItem key={index} name={item.name} id={item._id} price={item.price} image={item.image} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Collection;

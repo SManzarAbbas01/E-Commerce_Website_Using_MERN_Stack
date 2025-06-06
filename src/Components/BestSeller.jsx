@@ -1,51 +1,48 @@
-
+import React, { useContext, useEffect, useState } from 'react';
 import { ShopContext } from '../context/ShopContext';
-import React , { useContext, useEffect, useState } from 'react';
 import Title from './title';
 import ProductItem from './ProductItem';
 
-
 const BestSeller = () => {
+  // Calling our products data using context API
+  const { products } = useContext(ShopContext);
 
-    {/*Calling our products data using context API*/}
-    const {products} = useContext(ShopContext);
-    {/*adding a state variable with name best seller and initialize it using useState , then finding best seller products from products data and save them  in this bestSeller state */}
-    const[bestSeller, setBestSeller]=useState([]);
+  // Adding a state variable for best sellers and initializing it
+  const [bestSeller, setBestSeller] = useState([]);
 
-    useEffect(() => {
-        if (products && products.length > 0) {
-          const bestProducts = products.filter(item => item.bestseller);
-          setBestSeller(bestProducts.slice(0, 5));
-        }
-      }, [products]); // ← runs every time products
-      
+  // Finding best seller products and saving them in the bestSeller state
+  useEffect(() => {
+    if (products && products.length > 0) {
+      const bestProducts = products.filter(item => item.bestseller);
+      setBestSeller(bestProducts.slice(0, 5)); // Displaying up to 5 best sellers
+    }
+  }, [products]); // Effect runs every time products data changes
 
   return (
-    <div className='my-10'>
-        <div className='text-center text-3xl py-8'>
-            <Title text1={"BEST"} text2={"SELLER PRODUCTS"} />
-            <p className='w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600'>
-            SHOP OUR BEST SELLING PRODUCTS BELOW!
-            </p>
-        </div>
+    <div className='my-10 px-4 sm:px-6 md:px-8 lg:px-10 max-w-7xl mx-auto'>
+      <div className='text-center py-6 sm:py-8 md:py-10'>
+        <h2 className='text-3xl sm:text-4xl font-extrabold text-gray-800 mb-2'>
+          <Title text1={"BEST"} text2={"SELLER PRODUCTS"} />
+        </h2>
+        <p className='max-w-xl mx-auto text-sm sm:text-base text-gray-600 leading-relaxed'>
+          SHOP OUR BEST SELLING PRODUCTS BELOW!
+        </p>
+      </div>
 
-        <div className=' grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
-            {
-                    bestSeller.map((item,index)=>(
-                        <ProductItem  key={index} id={item._id} image={item.image} name={item.name} price={item.price} />
-
-                ))
-            
-            }
-        </div>
-      
-
-
-        
-         
-      
+      {/* Product Grid for Best Sellers */}
+      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8'>
+        {bestSeller.map((item) => (
+          <ProductItem
+            key={item._id} // Using _id for a unique and stable key
+            id={item._id}
+            image={item.image}
+            name={item.name}
+            price={item.price}
+          />
+        ))}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default BestSeller
+export default BestSeller;

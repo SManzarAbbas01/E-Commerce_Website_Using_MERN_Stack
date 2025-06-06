@@ -1,22 +1,32 @@
-import React, { useContext } from 'react'
-import { ShopContext } from '../context/ShopContext'
-import {Link} from 'react-router-dom'
+import React, { useContext } from 'react';
+import { ShopContext } from '../context/ShopContext';
+import { Link } from 'react-router-dom';
 
-const ProductItem = ({id,image,name,price}) => {
-
-    const {currency} =useContext(ShopContext);
+const ProductItem = ({ id, image, name, price }) => {
+  const { currency } = useContext(ShopContext);
 
   return (
-  <Link className='text-gray-700 cursor-pointer'to={`/product/${id}`}>
-    <div className=' overflow-hidden'>
-        <img className='hover:scale-110 transition ease-in-out' src={image[0]} alt="" />
-    </div>
-    <p className='pt-3 pb-1 text-sm'>  {name}</p>
-    <p className='text-sm font-medium'>{currency}{price}</p>
-  </Link>
+    <Link to={`/product/${id}`} className='group block text-gray-700 cursor-pointer overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out'>
+      {/* Product Image */}
+      <div className='relative w-full h-auto pb-[100%] overflow-hidden'> {/* Aspect ratio box for consistent image height */}
+        <img
+          className='absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out'
+          src={image[0]}
+          alt={name} // Added descriptive alt text
+        />
+      </div>
 
+      {/* Product Details */}
+      <div className='p-3 sm:p-4 bg-white'> {/* Added padding and background for details */}
+        <p className='text-sm sm:text-base font-normal text-gray-800 truncate mb-1'> {/* Increased text size, added truncate */}
+          {name}
+        </p>
+        <p className='text-base sm:text-lg font-semibold text-gray-900'> {/* Increased text size and weight */}
+          {currency}{price}
+        </p>
+      </div>
+    </Link>
+  );
+};
 
-  )
-}
-{/* we have created this component using this we will display multiple products in latest collection component*/}
-export default ProductItem
+export default ProductItem;

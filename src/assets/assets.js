@@ -68,6 +68,8 @@ import cross_icon from './cross_icon.png'
 import easypaisa_logo from './easypaisa_logo.png';
 import jazzcash_logo from './jazzcash_logo.png';
 import creditcard_logo from './creditcard_logo.png';
+// Import the support_logo here
+import support_logo from './support_logo.png'; // Assuming the file is named support_logo.png
 
 
 export const assets = {
@@ -89,6 +91,8 @@ export const assets = {
     easypaisa_logo,
     jazzcash_logo,
     creditcard_logo,
+    // Export the support_logo here
+    support_logo,
 }
 
 
@@ -634,7 +638,7 @@ export const products = [
     },
     {
         _id: "aaaby",
-        name: "Basic Black  Hijab Pins Box",
+        name: "Basic Black  Hijab Pins Box",
         description: "Add a touch of elegance to your hijab styling with our Premium Basic Hijab Pins Box. Featuring a curated selection of decorative pins, neatly arranged on a roll for easy access and storage—perfect for elevating any look with ease and grace.",
         price: 300,
         image: [p_img51],
