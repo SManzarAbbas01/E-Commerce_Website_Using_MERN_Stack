@@ -80,11 +80,13 @@ const Navbar = () => {
           onMouseEnter={() => setIsProfileDropdownOpen(true)}
           onMouseLeave={() => setIsProfileDropdownOpen(false)}
         >
+          <Link to={'/login'}>
           <img
             className='w-6 cursor-pointer hover:scale-105 transition-transform duration-200'
             src={assets.profile_icon}
             alt="Profile"
           />
+          </Link>
           {isProfileDropdownOpen && (
             <div className='absolute top-full right-0 pt-2 w-40 z-10'>
               <div className='flex flex-col gap-2 py-3 px-5 bg-white text-gray-700 rounded-lg shadow-xl border border-gray-100'>
