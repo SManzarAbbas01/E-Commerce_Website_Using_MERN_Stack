@@ -70,8 +70,8 @@ import jazzcash_logo from './jazzcash_logo.png';
 import creditcard_logo from './creditcard_logo.png';
 // Import the support_logo here
 import support_logo from './support_logo.png'; // Assuming the file is named support_logo.png
-
-
+import about_us from './about_us.png'; // Assuming the file is named about_us.png
+import LB from './LB.png'; // Assuming the file is named LB.png
 export const assets = {
     logo,
     cart_icon,
@@ -93,6 +93,8 @@ export const assets = {
     creditcard_logo,
     // Export the support_logo here
     support_logo,
+   about_us,
+   LB
 }
 
 
