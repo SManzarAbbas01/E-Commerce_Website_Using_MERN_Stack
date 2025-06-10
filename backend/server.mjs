@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import 'dotenv/config'
 import connectDB from './config/mongodb'
+import connectCloudinary from './config/cloudinary'
 
 //App config
 const app= express()
@@ -9,6 +10,9 @@ const port= process.env.PORT || 4000
 
 //ADDING CONNECT DB
 connectDB ()
+
+//ading clouinary
+connectCloudinary()
 
 //middleware
 // whatevr request we will get it will be passed by json
