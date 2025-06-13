@@ -85,7 +85,29 @@ const registerUser = async (req, res) => {
 }
 
 //route for admin login
-const adminLogin = async (req, res) => { }
+const adminLogin = async (req, res) => { 
+try{
+ const {email,password}=req.body
+ if(email===process.env.ADMIN_EMAIL && password===process.env.ADMIN_PASSWORD){
+  const token=jwt.sign(email+password,process.env.JWT_SECRET)
+  res.json({success:true,token})
+}
+else{
+  req.json({success:false,message:"Invalid Credentials"})
+}
+}
+ catch(error){
+        console.log("--- CATCH BLOCK ERROR DETAILS ---");
+        console.log("Full error object:", error);
+        console.log("Error message property:", error ? error.message : "Error object was null/undefined");
+        console.log("--- END ERROR DETAILS ---");
+        res.json({ success: false, message: error.message || "An unknown server error occurred." });
+    }
+
+
+
+
+}
 
 
 export { loginUser, registerUser, adminLogin };
