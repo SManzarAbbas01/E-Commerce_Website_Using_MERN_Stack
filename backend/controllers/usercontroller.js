@@ -1,61 +1,91 @@
-import bcrypt from 'bcrypt';
-import validator from 'validator';
+import express from 'express';
 import userModel from '../models/usermodel.js';
-import jwt from 'jsonwebtoken';
-
+import validator from 'validator'; // Assuming you have a validator library for email and password validation
+import bcrypt from 'bcrypt'; // Assuming you will use bcrypt for password hashing
+import jwt from 'jsonwebtoken'; // Assuming you will use jsonwebtoken for token generation
 const createToken = (id) => {
-  return jwt.sign({ _id: id }, process.env.JWT_SECRET);
-};
+  return jwt.sign({ id }, process.env.JWT_SECRET);
+}
 
-// Route for user login
+
+//route for user login
 const loginUser = async (req, res) => {
 
-};
+  try {
+    const { email, password } = req.body;
+    // Check if user exists
+    const user = await userModel.findOne({ email });
 
-// Route for user registration
+    if (!user) {
+      return res.json({ success: false, message: 'User does not exist' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (isMatch) {
+      const token = createToken(user._id);
+      res.json({ success: true, token })
+
+
+    }
+    else {
+      res.json({ success: false, message: 'Invalid Credentials' });
+    }
+
+  }
+  catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+
+
+
+
+
+
+}
+//route for user registration
 const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
     // Check if user already exists
-    const exist = await userModel.findOne({ email });
-    if (exist) {
-      return res.json({ success: false, message: "User already exists" });
+    const existingUser = await userModel.findOne({ email });
+    if (existingUser) {
+      return res.json({ success: false, message: 'User already exists' });
     }
-
-    // Validate email and strong password
+    // validationg email format & strong password
     if (!validator.isEmail(email)) {
-      return res.json({ success: false, message: "Enter valid email" });
+      return res.json({ success: false, message: 'please enter a valid email address' });
     }
 
-    if (password.length < 8) {
-      return res.json({ success: false, message: "Password should be at least 8 characters" });
+    if (password.length < 8 || !validator.isStrongPassword(password)) {
+      return res.json({ success: false, message: 'please enter a strong password with at least 8 characters, including uppercase, lowercase, numbers, and symbols' });
     }
 
-    // Hash user password
+    //hashing the password
     const salt = await bcrypt.genSalt(10);
-    const hashedPass = await bcrypt.hash(password, salt);
-
-    // Create new user
+    const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = new userModel({
       name,
       email,
-      password: hashedPass,
+      password: hashedPassword,
     });
-
+    //save the user to the database
     const user = await newUser.save();
     const token = createToken(user._id);
-
     res.json({ success: true, token });
-  } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
   }
-};
+  catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: err.message });
+  }
 
-// Route for admin login
-const adminLogin = async (req, res) => {
-  
-};
+
+}
+
+//route for admin login
+const adminLogin = async (req, res) => { }
+
 
 export { loginUser, registerUser, adminLogin };
