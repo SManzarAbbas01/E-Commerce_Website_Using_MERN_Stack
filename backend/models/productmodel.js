@@ -1,3 +1,4 @@
+import express from "express";
 import mongoose from "mongoose";
 const productSchema =new mongoose.Schema(
     {

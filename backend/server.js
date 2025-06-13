@@ -4,8 +4,8 @@ import express from 'express';
 import cors from 'cors';
 import connectDB from './config/mongodb.js';
 import connectCloudinary from './config/cloudinary.js'; // Assuming this exports a function to call
-import userRouter from './routes/userroute.js';
-import productRouter from './routes/productroute.js';
+import userRouter from './routes/userRoute.js';
+import productRouter from './routes/productRoute.js';
 
 // App config
 const app = express();
