@@ -1,16 +1,44 @@
-import React from 'react'
-import {assets} from '../assets/assets.js'
+import React from 'react';
+import { assets } from '../assets/assets.js';
+import { Link } from 'react-router-dom'; // Import Link for consistent navigation to dashboard/home
 
-function Navbar({setToken}) {
+/**
+ * @typedef {Object} AdminNavbarProps
+ * @property {function(string): void} setToken - Function to set or clear the authentication token, typically used for logout.
+ */
+
+/**
+ * The `AdminNavbar` component serves as the navigation bar for the admin panel.
+ * It provides branding and a logout mechanism, aligning with the main application's design language.
+ *
+ * @param {AdminNavbarProps} { setToken } - Props for the AdminNavbar component.
+ * @returns {JSX.Element} The Admin Panel Navbar component.
+ */
+function AdminNavbar({ setToken }) {
   return (
-    <div className='flex items-center py-2 px-[3%] justify-between '>
-      {/* Add mr-4 to the logo for margin-right */}
-      <img className='w-[max(10%,70px)] mr-3' src={assets.logo} alt="" />
+    <nav className='flex items-center justify-between py-4 px-6 bg-[#FFC0CB] shadow-md font-sans relative z-50'>
+      {/* Brand Logo and Name - Consistent with main Navbar */}
+      <div className="flex items-center gap-x-2"> {/* Adjusted gap for admin context */}
+        <Link to="/admin" className="flex items-center gap-2"> {/* Link to admin dashboard */}
+          <img src={assets.logo} className="w-16 h-auto" alt="LEELAF.PK Admin Logo" />
+          <p style={{ fontFamily: '"Playfair Display", serif' }} className="text-2xl text-[#292a2e] tracking-wide">
+            LEELAF.PK <span className="text-lg text-gray-600">(Admin)</span> {/* Indicate Admin Panel */}
+          </p>
+        </Link>
+      </div>
 
-      {/* Add ml-4 to the button for margin-left */}
-      <button onClick={()=>setToken('')} className='bg-gray-600 text-white px-5 py-2 sm:px-7 sm:py-2 rounded-full text-xs sm:text-sm ml-3'>Logout</button>
-    </div>
-  )
+      {/* Admin Actions */}
+      <div className='flex items-center gap-5'>
+        {/* Logout Button - Styled to fit theme */}
+        <button
+          onClick={() => setToken('')}
+          className='bg-[#292a2e] text-white px-6 py-2 rounded-full text-base hover:bg-gray-700 transition-colors duration-300 shadow-lg'
+        >
+          Logout
+        </button>
+      </div>
+    </nav>
+  );
 }
 
-export default Navbar
+export default AdminNavbar;

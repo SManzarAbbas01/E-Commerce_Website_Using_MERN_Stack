@@ -10,7 +10,7 @@ import Login from './components/Login'
  import 'react-toastify/dist/ReactToastify.css';
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
+export const currency = 'PKR'
 function App() {
 
   const [token,setToken]=useState(localStorage.getItem('token')?localStorage.getItem('token'):'');
