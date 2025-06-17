@@ -1,6 +1,6 @@
 import React,{useContext,useEffect,useState} from 'react'
 import { useParams } from 'react-router-dom';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../Context/ShopContext';
 import { assets } from '../assets/assets';
 
 const Product = () => {
@@ -15,7 +15,7 @@ const Product = () => {
   products.map((item) => {
     if(item._id === productId){
       setProductData(item)
-      setImaege(item.image[0])
+      setImaege(item.Image[0])
       
       
       return null
@@ -37,7 +37,7 @@ const Product = () => {
       <div className='flex-1 flex flex-col-reverse gap-3 sm:flex-row'>
         <div className='flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-betweem sm:justify-normal sm:w-[18.7%] w-full'>
         {
-            productData.image.map((item, index) => {
+            productData.Image.map((item, index) => {
           return (
           <img
                 src={item}
@@ -74,7 +74,7 @@ const Product = () => {
           <div className='flex flex-col gap-4 my-8'>
             <p> Select Size</p>
             <div className='flex-gap-2'>
-              {productData.sizes.map((item,index) =>(
+              {productData.Sizes.map((item,index) =>(
                 <button onClick={() => setSize(item)} className={`border py-2 px-4 bg-gray-100 ${item === size ? `border-orange-500` : ``}`} key={index}> {item} </button>
 
               ) )}

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Title from '../Components/title';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../Context/ShopContext';
 
 const Orders = () => {
     const { products, currency } = useContext(ShopContext);
@@ -34,7 +34,7 @@ const Orders = () => {
                             <div className='py-4 px-4 sm:px-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
                                 {/* Order Item Details (Left Side) */}
                                 <div className='flex items-start gap-4 sm:gap-6 text-sm flex-grow'>
-                                    <img className='w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-md flex-shrink-0' src={order.image[0]} alt={order.name} />
+                                    <img className='w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-md flex-shrink-0' src={order.Image[0]} alt={order.name} />
                                     <div className='flex flex-col justify-center'>
                                         <p className='sm:text-lg font-semibold text-gray-800 mb-1'>{order.name}</p>
                                         <p className='text-base text-gray-700 mb-1'>{currency}{order.price} per item</p>

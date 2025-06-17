@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../Context/ShopContext';
 import { assets } from '../assets/assets';
 import Title from '../Components/title';
 import ProductItem from '../Components/ProductItem';
@@ -31,6 +31,7 @@ const Collection = () => {
 
     const applyFilters = () => {
         let productsCopy = products; // Start with the full product list
+        
 
         if (showSearch && search) {
             productsCopy = productsCopy.filter(item =>
@@ -138,7 +139,7 @@ const Collection = () => {
                                 name={item.name}
                                 id={item._id}
                                 price={item.price}
-                                image={item.image}
+                                Image={item.Image}
                             />
                         ))}
                     </div>

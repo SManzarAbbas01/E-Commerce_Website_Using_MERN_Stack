@@ -93,7 +93,7 @@ try{
   res.json({success:true,token})
 }
 else{
-  req.json({success:false,message:"Invalid Credentials"})
+  res.json({success:false,message:"Invalid Credentials"})
 }
 }
  catch(error){

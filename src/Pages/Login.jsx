@@ -1,14 +1,57 @@
-import React, { useState } from 'react'; // Ensure useState is imported
+import React, { useContext, useState } from 'react'; // Ensure useState is imported
+import { ShopContext } from '../Context/ShopContext';
+import axios from 'axios';
+import { toast } from 'react-toastify'; // Import both
+
+
 
 const Login = () => {
   const [currentState, setCurrentState] = useState('Sign Up'); // 'Sign Up' or 'Login'
-
+  const {token,setToken,navigate,backendUrl}=useContext(ShopContext)
+ const [name,setName]=useState('')
+ const [email,setEmail]=useState('')
+ const [password,setPassword]=useState('')
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    // In a real application, you'd handle form submission here.
-    // For example, sending data to an API for authentication or registration.
-    console.log(`Submitting form for: ${currentState}`);
-    // You would typically reset the form or show a success/error message here
+     
+    try{
+      if(currentState==='Sign Up'){
+        const response = await axios.post(backendUrl+'/api/user/register',{name,email,password})
+        
+        if(response.data.success){
+          setToken(response.data.token)
+          localStorage.setItem('token',response.data.token)
+        }
+        else{
+          toast.error(response.data.message)
+        }
+
+
+
+      }
+      else{
+        const response = await axios.post(backendUrl+'/api/user/login',{email,password})
+         if(response.data.success){
+          setToken(response.data.token)
+          localStorage.setItem('token',response.data.token)
+          toast.success(response.data.message)
+        }
+        else{
+          toast.error(response.data.message)
+        }
+      }
+
+    }
+    catch(error){
+      console.log(error)
+      toast.error(error.message)
+    }
+
+
+
+
+
+   
   };
 
   return (
@@ -25,6 +68,8 @@ const Login = () => {
         <div className="w-full flex flex-col gap-4 mb-4">
           {currentState === 'Login' ? null : (
             <input
+              onChange={(e)=>setName(e.target.value)}
+              value={name}
               type="text"
               className='w-full px-4 py-2.5 border border-gray-300 rounded-md text-gray-800 placeholder-gray-500 focus:ring-1 focus:ring-[#FFC0CB] focus:border-[#FFC0CB] outline-none transition-all duration-200'
               placeholder='Your Name'
@@ -32,12 +77,16 @@ const Login = () => {
             />
           )}
           <input
+           onChange={(e)=>setEmail(e.target.value)}
+           value={email}
             type="email"
             className='w-full px-4 py-2.5 border border-gray-300 rounded-md text-gray-800 placeholder-gray-500 focus:ring-1 focus:ring-[#FFC0CB] focus:border-[#FFC0CB] outline-none transition-all duration-200'
             placeholder='Email Address'
             required
           />
           <input
+           onChange={(e)=>setPassword(e.target.value)}
+           value={password}
             type="password"
             className='w-full px-4 py-2.5 border border-gray-300 rounded-md text-gray-800 placeholder-gray-500 focus:ring-1 focus:ring-[#FFC0CB] focus:border-[#FFC0CB] outline-none transition-all duration-200'
             placeholder='Password'

@@ -58,7 +58,7 @@ const addProduct = async (req, res) => {
         const product = new productModel(productData);
         await product.save();
 
-        res.json({ success: true, message: "Product data received successfully" });
+        res.json({ success: true, message: "Product Added successfully" });
     } catch (error) {
         console.log("--- CATCH BLOCK ERROR DETAILS ---");
         console.log("Full error object:", error);

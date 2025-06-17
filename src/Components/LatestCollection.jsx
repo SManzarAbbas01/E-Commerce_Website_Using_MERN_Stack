@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ProductItem from './ProductItem';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../Context/ShopContext';
 import Title from './title';
 
 const LatestCollection = () => {
@@ -34,7 +34,7 @@ const LatestCollection = () => {
           <ProductItem
             key={item._id}
             id={item._id}
-            image={item.image}
+            Image={item.Image}
             name={item.name}
             price={item.price}
           />

@@ -1,13 +1,16 @@
 import { createContext, useEffect, useState } from "react";
-import { products } from "../assets/assets"; // Assuming 'products' is imported from local assets
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 export const ShopContext = createContext();
+export const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 const ShopContextProvider = (props) => {
     {/*CREATING STATE VARIABLES */}
     const currency = ' pkr ';
     const delivery_fee = 200;
+   
+    const [products,setProducts]=  useState([])
+    const [token, setToken]= useState('')
 
     const [search, setSearch] = useState('');
     {/* If this is true then we will display the search BarProp, if false then our search bar is hidden */}
@@ -88,6 +91,50 @@ const ShopContextProvider = (props) => {
         return totalCount;
     }
 
+const getProductData = async ()=>{
+    try {
+        const response = await axios.get(backendUrl+'/api/product/list')
+        console.log(response.data)
+        if(response.data.success){
+            setProducts(response.data.products)
+        }
+        else{
+            toast.error(error.message)
+        }
+
+
+
+    }
+    catch(error){
+        console.log(error);
+        toast.error(error.message)
+    }
+
+
+
+
+}
+useEffect(()=>{
+ getProductData()
+
+
+},[])
+
+
+useEffect(()=>{
+ if(!token && localStorage.getItem('token')){
+    setToken(localStorage.getItem('token'))
+ }
+
+
+},[])
+
+
+
+
+
+
+
     {/* this value object contains variables and functions we want to access in any other component */}
     const value = {
         products, // Assuming 'products' is directly available from the import
@@ -102,7 +149,8 @@ const ShopContextProvider = (props) => {
         getCartCount,
         updateQuantity,// Added updateQuantity function
         getCartAmount,
-        navigate
+        navigate,
+        backendUrl,token,setToken
     }
 
     return (

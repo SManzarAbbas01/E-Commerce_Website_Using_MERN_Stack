@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../Context/ShopContext';
 import Title from '../Components/title.jsx';
 import bin_icon from '../assets/bin_icon.png'; // Added bin icon import
 import CartTotal from '../Components/CartTotal.jsx';
@@ -68,7 +68,7 @@ const Cart = () => {
                                         <div className='flex items-center gap-4 flex-grow'>
                                             <img
                                                 className='w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-md flex-shrink-0'
-                                                src={productData.image && productData.image.length > 0 ? productData.image[0] : 'https://via.placeholder.com/100'}
+                                                src={productData.Image && productData.Image.length > 0 ? productData.Image[0] : 'https://via.placeholder.com/100'}
                                                 alt={productData.name || "Product image"}
                                             />
                                             <div className='flex flex-col'>

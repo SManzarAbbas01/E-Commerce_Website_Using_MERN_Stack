@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../Context/ShopContext';
 import { Link } from 'react-router-dom';
 
-const ProductItem = ({ id, image, name, price }) => {
+const ProductItem = ({ id, Image, name, price ,bestSeller }) => {
   const { currency } = useContext(ShopContext);
 
   return (
@@ -11,7 +11,7 @@ const ProductItem = ({ id, image, name, price }) => {
       <div className='relative w-full h-auto pb-[100%] overflow-hidden'> {/* Aspect ratio box for consistent image height */}
         <img
           className='absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out'
-          src={image[0]}
+          src={Image[0]}
           alt={name} // Added descriptive alt text
         />
       </div>
