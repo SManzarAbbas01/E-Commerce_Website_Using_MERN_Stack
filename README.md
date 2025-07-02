@@ -1,12 +1,18 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Leelaf.pk > website for an  E-commerce Platform
+This is a full-stack e-commerce web application for the hijab brand "@leelafbylaiba". It offers an intuitive platform for customers to browse and purchase products, featuring a responsive UI, shopping cart, and an admin panel for business operations.
+## Features
+* Fully Responsive UI
+* User Authentication (Login/Registration)
+* Product Catalog with Dynamic Filtering and Search
+* Shopping Cart Management
+* Checkout Process (Delivery Info & Payment Options)
+* Admin Panel for Product & Order Management
+* Image Management via Cloudinary
+* Newsletter Subscription
+* ## Technology Stack
+* **Frontend:** ReactJS
+* **Backend:** Node.js, ExpressJS
+* **Database:** MongoDB (via MongoDB Atlas)
+* **Authentication:** JWT (JSON Web Tokens)
+* **Cloud Storage:** Cloudinary
+* **Version Control:** Git, GitHub
