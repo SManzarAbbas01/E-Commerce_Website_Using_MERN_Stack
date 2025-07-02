@@ -2,11 +2,12 @@ import React, { useContext, useState } from 'react'; // Ensure useState is impor
 import { ShopContext } from '../Context/ShopContext';
 import axios from 'axios';
 import { toast } from 'react-toastify'; // Import both
+import { useEffect } from 'react';
 
 
 
 const Login = () => {
-  const [currentState, setCurrentState] = useState('Sign Up'); // 'Sign Up' or 'Login'
+  const [currentState, setCurrentState] = useState('Login'); // 'Sign Up' or 'Login'
   const {token,setToken,navigate,backendUrl}=useContext(ShopContext)
  const [name,setName]=useState('')
  const [email,setEmail]=useState('')
@@ -21,6 +22,7 @@ const Login = () => {
         if(response.data.success){
           setToken(response.data.token)
           localStorage.setItem('token',response.data.token)
+          toast.success(response.data.message)
         }
         else{
           toast.error(response.data.message)
@@ -53,6 +55,19 @@ const Login = () => {
 
    
   };
+
+useEffect(()=>{
+if(token){
+  navigate('/')
+}
+},[token])
+
+
+
+
+
+
+
 
   return (
     // This outer div already has bg-pink-50 as requested in the previous iteration.

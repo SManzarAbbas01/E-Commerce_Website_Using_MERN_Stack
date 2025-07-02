@@ -1,13 +1,20 @@
 import React, { useState, useContext } from 'react';
 import { assets } from '../assets/assets';
 import { Link, NavLink } from 'react-router-dom';
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../Context/ShopContext';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
-  const { setShowSearch, getCartCount } = useContext(ShopContext);
+  const { setShowSearch, getCartCount,navigate,token,setToken,setCartItems } = useContext(ShopContext);
+  const logout=()=>{
+     navigate('/login')
+    localStorage.removeItem(token)
+    setToken('')
+    setCartItems({})
+   
+  }
 
   const handleNavLinkClick = () => {
     setIsMobileMenuOpen(false); // Close mobile menu when a link is clicked
@@ -75,28 +82,40 @@ const Navbar = () => {
         />
 
         {/* Profile Dropdown */}
-        <div
-          className='relative'
-          onMouseEnter={() => setIsProfileDropdownOpen(true)}
-          onMouseLeave={() => setIsProfileDropdownOpen(false)}
+       <div
+  className='relative'
+  onMouseEnter={() => token && setIsProfileDropdownOpen(true)}
+  onMouseLeave={() => token && setIsProfileDropdownOpen(false)}
+>
+  <img
+    onClick={() => {
+      if (!token) navigate('/login');
+    }}
+    className='w-6 cursor-pointer hover:scale-105 transition-transform duration-200'
+    src={assets.profile_icon}
+    alt="Profile"
+  />
+
+  {token && isProfileDropdownOpen && (
+    <div className='absolute top-full right-0 pt-2 w-40 z-10'>
+      <div className='flex flex-col gap-2 py-3 px-5 bg-white text-gray-700 rounded-lg shadow-xl border border-gray-100'>
+        <p className='cursor-pointer hover:text-black hover:font-medium transition-colors duration-200'>
+          My Profile
+        </p>
+        <p onClick={()=>{navigate('/orders')}} className='cursor-pointer hover:text-black hover:font-medium transition-colors duration-200'>
+          Orders
+        </p>
+        <p
+          onClick={logout}
+          className='cursor-pointer hover:text-black hover:font-medium transition-colors duration-200'
         >
-          <Link to={'/login'}>
-          <img
-            className='w-6 cursor-pointer hover:scale-105 transition-transform duration-200'
-            src={assets.profile_icon}
-            alt="Profile"
-          />
-          </Link>
-          {isProfileDropdownOpen && (
-            <div className='absolute top-full right-0 pt-2 w-40 z-10'>
-              <div className='flex flex-col gap-2 py-3 px-5 bg-white text-gray-700 rounded-lg shadow-xl border border-gray-100'>
-                <p className='cursor-pointer hover:text-black hover:font-medium transition-colors duration-200'>My Profile</p>
-                <p className='cursor-pointer hover:text-black hover:font-medium transition-colors duration-200'>Orders</p>
-                <p className='cursor-pointer hover:text-black hover:font-medium transition-colors duration-200'>Logout</p>
-              </div>
-            </div>
-          )}
-        </div>
+          Logout
+        </p>
+      </div>
+    </div>
+  )}
+</div>
+
 
         {/* Cart Icon with Count */}
         <Link to='/cart' className='relative'>

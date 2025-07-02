@@ -1,163 +1,187 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-export const ShopContext = createContext();
-export const backendUrl = import.meta.env.VITE_BACKEND_URL
+import { toast } from 'react-toastify';
+
+export const ShopContext = createContext(null);
+export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const ShopContextProvider = (props) => {
-    {/*CREATING STATE VARIABLES */}
+    const [products, setProducts] = useState([]);
+    const [cartItems, setCartItems] = useState({});
+    const [token, setToken] = useState("");
+    const [search, setSearch] = useState('');
+    const [showSearch, setShowSearch] = useState(false);
+    
     const currency = ' pkr ';
     const delivery_fee = 200;
-   
-    const [products,setProducts]=  useState([])
-    const [token, setToken]= useState('')
-
-    const [search, setSearch] = useState('');
-    {/* If this is true then we will display the search BarProp, if false then our search bar is hidden */}
-    const [showSearch, setShowSearch] = useState(false);
-
     const navigate = useNavigate();
-    //making navigate object to use in our cart page so when user clicks on checkout he is navigated to payment details page
 
-    const [cartItems, setCartItems] = useState(() => {
-        // Initialize cartItems with an empty object on initial load
-        // You might want to pre-populate this based on 'products' from assets if needed
-        let defaultCart = {};
-        
-        return defaultCart;
-    });
+    // --- DATA FETCHING ---
+
+    const getProductData = async () => {
+        try {
+            const response = await axios.get(backendUrl + '/api/product/list');
+            if (response.data.success) {
+                setProducts(response.data.products);
+            } else {
+                toast.error(response.data.message || "Failed to fetch products.");
+            }
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            toast.error("Error fetching products. Please try again.");
+        }
+    };
+
+    // Correctly loads the user's cart from the database
+    const loadCartData = async (authToken) => {
+        try {
+            // Use GET request as defined in the backend route for fetching data
+            const response = await axios.get(backendUrl + '/api/cart/get', {
+                headers: { Authorization: `Bearer ${authToken}` }
+            });
+            if (response.data.success) {
+                setCartItems(response.data.cartData);
+            }
+        } catch (error) {
+            console.error("Could not load cart data:", error.response ? error.response.data.message : error.message);
+        }
+    };
+
+    // --- CART MANAGEMENT ---
 
     const addToCart = async (itemId, size) => {
-        let cartData = structuredClone(cartItems);
-        if (cartData[itemId]) {
-            if (cartData[itemId][size]) {
-                cartData[itemId][size] += 1;
-            } else {
-                cartData[itemId][size] = 1;
+        setCartItems((prev) => {
+            const newCart = { ...prev };
+            if (!newCart[itemId]) {
+                newCart[itemId] = {};
             }
-        } else {
-            cartData[itemId] = {};
-            cartData[itemId][size] = 1;
-        }
-        setCartItems(cartData);
-    }
+            newCart[itemId][size] = (newCart[itemId][size] || 0) + 1;
+            return newCart;
+        });
 
-    // Extracted from video: Function to update item quantity
+        if (token) {
+            try {
+                await axios.post(
+                    backendUrl + '/api/cart/add',
+                    { itemId, size },
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+            } catch (error) {
+                console.error("Error adding to cart on backend:", error.response ? error.response.data : error);
+                toast.error(error.response?.data?.message || "Failed to update cart.");
+            }
+        }
+    };
+    
     const updateQuantity = async (itemId, size, quantity) => {
-        let cartData = structuredClone(cartItems);
-        if (!cartData[itemId]) { // Ensure product entry exists
-            cartData[itemId] = {};
-        }
-        cartData[itemId][size] = quantity; // Directly set the quantity
-        setCartItems(cartData);
-    }
-
-// to get tht total amount of products added in our file we make this func
-    const getCartAmount =  () => {
-        let totalAmount = 0 ;
-        //
-        for (const items in cartItems)
-        {   // storing product data in this item info variable if the if statmenet matches
-            let itemInfo = products.find((product) => product._id === items);
-            for (const item in cartItems[items])
-            {
-                try {
-                     if (cartItems[items][item] >0 )
-                     {
-                        totalAmount +=itemInfo.price *cartItems[items][item];
-                     }
-
-                }
-                catch( error)
-                {
-
+        setCartItems((prev) => {
+            const newCart = { ...prev };
+            if (newCart[itemId]) {
+                if (quantity > 0) {
+                    newCart[itemId][size] = quantity;
+                } else {
+                    delete newCart[itemId][size];
+                    if (Object.keys(newCart[itemId]).length === 0) {
+                        delete newCart[itemId];
+                    }
                 }
             }
+            return newCart;
+        });
 
+        if (token) {
+            try {
+                // *** FIX: Use the 'token' state variable, not the undefined 'authToken' ***
+                await axios.post(
+                    backendUrl + '/api/cart/update',
+                    { itemId, size, quantity }, 
+                    { headers: { Authorization: `Bearer ${token}` }}
+                );
+            } catch (error) {
+                console.error("Error updating cart on backend:", error.response ? error.response.data : error);
+                toast.error(error.response?.data?.message || "Failed to update cart.");
+            }
+        }
+    };
+    
+    // --- AUTH & LOGOUT ---
+    const logout = () => {
+        localStorage.removeItem("token");
+        setToken("");
+    };
+
+    // --- CALCULATIONS ---
+
+    const getCartAmount = () => {
+        let totalAmount = 0;
+        for (const itemId in cartItems) {
+            const itemInfo = products.find((product) => product._id === itemId);
+            if (itemInfo) {
+                for (const size in cartItems[itemId]) {
+                    totalAmount += itemInfo.price * cartItems[itemId][size];
+                }
+            }
         }
         return totalAmount;
-    }
+    };
 
-    {/* function to gte the quanity of product we have selected be displayed in out cart */}
     const getCartCount = () => {
         let totalCount = 0;
-        for (const items in cartItems) {
-            for (const item in cartItems[items]) {
-                if (cartItems[items][item] > 0) {
-                    totalCount += cartItems[items][item];
-                }
+        for (const itemId in cartItems) {
+            for (const size in cartItems[itemId]) {
+                totalCount += cartItems[itemId][size];
             }
         }
         return totalCount;
-    }
+    };
 
-const getProductData = async ()=>{
-    try {
-        const response = await axios.get(backendUrl+'/api/product/list')
-        console.log(response.data)
-        if(response.data.success){
-            setProducts(response.data.products)
+    // --- EFFECTS ---
+
+    useEffect(() => {
+        async function initialLoad() {
+            await getProductData();
+            const storedToken = localStorage.getItem('token');
+            if (storedToken) {
+                setToken(storedToken);
+            }
         }
-        else{
-            toast.error(error.message)
+        initialLoad();
+    }, []);
+
+    useEffect(() => {
+        if (token) {
+            loadCartData(token);
+        } else {
+            setCartItems({});
         }
+    }, [token]);
 
-
-
-    }
-    catch(error){
-        console.log(error);
-        toast.error(error.message)
-    }
-
-
-
-
-}
-useEffect(()=>{
- getProductData()
-
-
-},[])
-
-
-useEffect(()=>{
- if(!token && localStorage.getItem('token')){
-    setToken(localStorage.getItem('token'))
- }
-
-
-},[])
-
-
-
-
-
-
-
-    {/* this value object contains variables and functions we want to access in any other component */}
-    const value = {
-        products, // Assuming 'products' is directly available from the import
+    const contextValue = {
+        products,
+        cartItems,
+        token,
+        setToken,
+        logout,
+        addToCart,
+        updateQuantity,
+        getCartCount,
+        getCartAmount,
         currency,
         delivery_fee,
+        navigate,
+        backendUrl,
         search,
         setSearch,
         showSearch,
         setShowSearch,
-        cartItems,
-        addToCart,
-        getCartCount,
-        updateQuantity,// Added updateQuantity function
-        getCartAmount,
-        navigate,
-        backendUrl,token,setToken
-    }
+    };
 
     return (
-        <ShopContext.Provider value={value}>
+        <ShopContext.Provider value={contextValue}>
             {props.children}
         </ShopContext.Provider>
-    )
-}
+    );
+};
 
 export default ShopContextProvider;
