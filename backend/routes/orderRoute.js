@@ -25,6 +25,7 @@ orderRouter.post('/stripe', authUser, placeOrderCard);
 
 // --- User Features (Protected by user auth) ---
 // Note: Using GET is more standard for fetching data.
-orderRouter.post('/user', authUser, userOrders);
+// CORRECT & BEST PRACTICE
+orderRouter.get('/userorders', authUser, userOrders);
 
 export default orderRouter;
